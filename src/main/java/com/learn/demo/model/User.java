@@ -1,5 +1,7 @@
 package com.learn.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
     private String name;
     private String role;
