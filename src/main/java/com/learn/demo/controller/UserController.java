@@ -2,6 +2,7 @@ package com.learn.demo.controller;
 
 import com.learn.demo.entity.UserEntity;
 import com.learn.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
+    public ResponseEntity<UserEntity> createUser(@Valid  @RequestBody UserEntity user) {
         UserEntity saved = userService.createUser(user);
         return ResponseEntity.status(201).body(saved);
     }
