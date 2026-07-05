@@ -1,6 +1,8 @@
 package com.learn.demo.service;
 
 import com.learn.demo.entity.UserEntity;
+import com.learn.demo.exception.DuplicateUserException;
+import com.learn.demo.exception.UserNotFoundException;
 import com.learn.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,14 @@ public class UserService {
 
     public UserEntity createUser(UserEntity user) {
         if (userRepository.existsByName(user.getName())) {
-            throw new RuntimeException("User with this name already exists");
+            throw new DuplicateUserException(user.getName());
         }
         return userRepository.save(user);
     }
 
-    public Optional<UserEntity> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public List<UserEntity> getAllUsers() {
@@ -39,7 +42,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
     }
